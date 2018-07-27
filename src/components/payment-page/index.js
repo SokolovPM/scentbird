@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
 
-import Header from './header';
 import PaymentInfo from './payment-info';
 import ProductInfo from './product-info';
 import DeliveryInfo from './delivery-info';
@@ -11,16 +10,20 @@ const Content = styled.div`
   justify-content: space-between;
 `;
 
+const ProductAndDelivery = styled.div`
+  max-width: 400px;
+  margin-right: 50px;
+`;
+
 class PaymentPage extends Component {
   render() {
     return (
       <div>
-        <Header />
         <Content>
-          <div>
+          <ProductAndDelivery>
             <ProductInfo />
             <DeliveryInfo />
-          </div>
+          </ProductAndDelivery>
           <PaymentInfo />
         </Content>
       </div>

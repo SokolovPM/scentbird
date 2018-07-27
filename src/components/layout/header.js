@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
-console.log('here', styled)
+
+import { Icon } from '../icon';
 
 const Container = styled.div`
-  border: 1px solid black;
-  height: 50px;
+  margin-bottom: 45px;
 `;
-
 
 class Header extends Component {
   render() {
     return (
       <Container>
-        header
+        <div>
+          <Icon name="logo" />
+        </div>
       </Container>
     )
   }

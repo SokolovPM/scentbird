@@ -1,6 +1,8 @@
 import React from 'react'
-import PaymentPage from '../payment-page';
 import styled from 'styled-components';
+
+import Header from './header';
+import PaymentPage from '../payment-page';
 
 const Content = styled.div`
   margin: 10px 120px;
@@ -9,8 +11,8 @@ const Content = styled.div`
 export const Layout = ({ children }) => (
   <div>
     <Content>
+      <Header />
       <PaymentPage />
-
     </Content>
   </div>
 )

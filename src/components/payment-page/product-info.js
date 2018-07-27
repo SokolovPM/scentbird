@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
 
-import productImg from './product-image.svg';
+import { Icon } from '../icon';
 
 const Container = styled.div`
-  max-width: 400px;
   border: 1px solid #E6E6E6;
   padding: 30px;
   margin-bottom: 30px;
@@ -51,7 +50,7 @@ class ProductInfo extends Component {
     return (
       <Container>
         <ProductImg>
-          <span dangerouslySetInnerHTML={{ __html: productImg }} />
+          <Icon name="product" />
         </ProductImg>
         <Line />
         <Row>
