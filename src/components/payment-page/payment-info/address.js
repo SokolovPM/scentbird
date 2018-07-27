@@ -3,17 +3,17 @@ import styled  from 'styled-components';
 
 const Container = styled.div`
   border: 1px solid black;
-  flex-grow: 1;
+  margin-bottom: 40px;
 `;
 
-class PaymentInfo extends Component {
+class Address extends Component {
   render() {
     return (
       <Container>
-        payment-info
+        address information
       </Container>
     )
   }
 }
 
-export default PaymentInfo
+export default Address;
