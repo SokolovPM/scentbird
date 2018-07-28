@@ -29,7 +29,8 @@ class Address extends Component {
     },
     postcode: {
       value: '',
-      validation: true
+      validation: true,
+      error: ''
     },
     phone: {
       value: ''
@@ -50,6 +51,21 @@ class Address extends Component {
     const field = this.state[name];
     field.validation = !!field.value;
     this.setState({ [name]: field });
+  }
+
+  postCodeValidation = () => {
+    const postcode = this.state.postcode;
+    if (!postcode.value) {
+      postcode.validation = false;
+      postcode.error = 'This field is required';
+    } else if (postcode.value.length !== 6) {
+      postcode.validation = false;
+      postcode.error = 'The postal code must contain six digits';
+    } else {
+      postcode.validation = true;
+      postcode.error = '';
+    }
+    this.setState({ postcode });
   }
 
   render() {
@@ -106,14 +122,15 @@ class Address extends Component {
         <Row>
           <RowItem width={33}>
             <Input
-              placeholder="Postcode"
+              type="number"
+              placeholder="Postal code"
               value={postcode.value}
               onChange={(e) => this.handleInput(e, 'postcode')}
-              onBlur={() => this.notEmptyValidate('postcode')}
+              onBlur={this.postCodeValidation}
               validation={postcode.validation}
             />
-            <Label>Postcode</Label>
-            {!postcode.validation && <Error>This field is required</Error>}
+            <Label>Postal code</Label>
+            {!postcode.validation && <Error>{postcode.error}</Error>}
           </RowItem>
         </Row>
         <Row>
