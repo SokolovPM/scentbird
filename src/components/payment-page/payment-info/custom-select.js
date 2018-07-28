@@ -11,7 +11,7 @@ const Control = styled.div`
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  background-color: #FAFAFA;
+  background-color: ${props => props.isLight ? '#FFFFFF' : '#FAFAFA'};
   padding: 0;
   color: #000000;
   font-size: 18px;
@@ -25,7 +25,7 @@ const Label = styled.div`
   cursor: pointer;
 
   &:hover > div {
-    opacity: 1;
+    visibility: visible;
   }
 
   & div {
@@ -36,8 +36,7 @@ const Label = styled.div`
   & div {
     position: absolute;
     z-index: 10;
-    background-color:lightgrey;
-    opacity: 0;
+    background-color: #FAFAFA;
     transition: opacity 0.5s;
   }
 `;
@@ -68,6 +67,10 @@ const ListItem = styled.li`
 
 const Wrapper = styled.div`
   width: 100%;
+  visibility: hidden;
+  &:hover {
+    visibility: visible;
+  }
 `;
 
 const ArrowDown = styled.span`
@@ -76,12 +79,16 @@ const ArrowDown = styled.span`
   right: 15px;
 `;
 
+const Value = styled.span`
+  color: ${props => props.isPlaceholder ? '#9B9B9B' : '#000000'};
+`;
+
 class CustomSelect extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedOption: this.props.options[0]
+      selectedOption: this.props.placeholder || this.props.options[0]
     }
   }
 
@@ -96,11 +103,11 @@ class CustomSelect extends Component {
     const selectedOption = this.state.selectedOption;
     return (
       <Container>
-        <Control>
+        <Control isLight={this.props.light}>
           <Label>
-            <span>{selectedOption.name}</span>
+            <Value isPlaceholder={!selectedOption.name}>{selectedOption.name || selectedOption}</Value>
             <ArrowDown>
-              <Icon name="arrowDown" />
+              <Icon name={this.props.iconName || 'arrowDown'} />
             </ArrowDown>
             <Wrapper>
               <List>

@@ -101,6 +101,7 @@ class Address extends Component {
               onChange={(e) => this.handleInput(e, 'firstName')}
               onBlur={() => this.notEmptyValidate('firstName')}
               validation={firstName.validation}
+              isLight={true}
             />
             <Label>First name</Label>
             {!firstName.validation && <Error>This field is required</Error>}

@@ -75,6 +75,7 @@ class Account extends Component {
               onChange={this.handleEmail}
               onBlur={this.emailOnBlur}
               validation={email.validation}
+              isLight={true}
             />
             <Label>Email address</Label>
             {!email.validation && <Error>Wrong email</Error>}

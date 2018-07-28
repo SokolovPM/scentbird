@@ -24,7 +24,8 @@ export const RowItem = styled.div`
 export const Input = styled.input`
   width: 100%;
   height: 50px;
-  ${props => props.validation ? 'border: 1px solid #E6E6E6;' : 'border: 2px solid #FD6464; background-color: #FAFAFA;'}
+  ${props => props.validation ? 'border: 1px solid #E6E6E6;' : 'border: 2px solid #FD6464;'}
+  ${props => props.isLight ? '' : 'background-color: #FAFAFA;'}
   padding-left: 15px;
   color: #000000;
   font-size: 18px;

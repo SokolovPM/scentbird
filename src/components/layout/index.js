@@ -5,7 +5,7 @@ import Header from './header';
 import PaymentPage from '../payment-page';
 
 const Content = styled.div`
-  margin: 10px 120px;
+  margin: 10px 120px 80px 120px;
 `;
 
 export const Layout = ({ children }) => (

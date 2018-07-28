@@ -3,6 +3,7 @@ import styled  from 'styled-components';
 
 import Address from './address';
 import Account from './account';
+import Card from './card';
 
 const Container = styled.div`
   flex-grow: 1;
@@ -31,6 +32,7 @@ class PaymentInfo extends Component {
         </Header>
         <Account />
         <Address />
+        <Card />
       </Container>
     )
   }
