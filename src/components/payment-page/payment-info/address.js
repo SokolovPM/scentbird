@@ -3,12 +3,32 @@ import styled  from 'styled-components';
 
 import { Container, Title, Row, RowItem, Input, Label, Error } from './common-components';
 
+import CustomSelect from './custom-select'
 const Offer = styled.div`
   color: #000000;
   font-size: 14px;
   padding-top: 17px;
   padding-left: 10px;
 `;
+
+const states = [
+  {
+    code: 'NY',
+    name: 'NEW YORK'
+  },
+  {
+    code: 'CA',
+    name: 'CALIFORNIA'
+  },
+  {
+    code: 'HW',
+    name: 'HAWAII'
+  },
+  {
+    code: 'AL',
+    name: 'ALABAMA'
+  }
+]
 
 class Address extends Component {
   state = {
@@ -131,6 +151,12 @@ class Address extends Component {
             />
             <Label>Postal code</Label>
             {!postcode.validation && <Error>{postcode.error}</Error>}
+          </RowItem>
+          <RowItem width={33} style={{ paddingRight: '0', marginRight: '10px' }}>
+            <CustomSelect options={states} />
+          </RowItem>
+          <RowItem width={33} isLastBlock={true} style={{ paddingLeft: '0', marginLeft: '10px' }}>
+            <CustomSelect options={states} />
           </RowItem>
         </Row>
         <Row>
