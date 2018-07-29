@@ -6,6 +6,7 @@ import shield from './shield.svg'
 import cards from './cards.svg'
 import blackQuestion from './black-question.svg'
 import selectArrowGrey from './select-arrow-grey.svg'
+import buyArrow from './buy-arrow.svg';
 
 export const icons = {
   delivery,
@@ -15,5 +16,6 @@ export const icons = {
   shield,
   cards,
   blackQuestion,
-  selectArrowGrey
+  selectArrowGrey,
+  buyArrow
 }

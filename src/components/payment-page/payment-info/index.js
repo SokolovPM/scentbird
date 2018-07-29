@@ -4,6 +4,7 @@ import styled  from 'styled-components';
 import Address from './address';
 import Account from './account';
 import Card from './card';
+import Buttons from './buttons';
 
 const Container = styled.div`
   flex-grow: 1;
@@ -33,6 +34,7 @@ class PaymentInfo extends Component {
         <Account />
         <Address />
         <Card />
+        <Buttons />
       </Container>
     )
   }

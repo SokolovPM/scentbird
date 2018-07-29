@@ -12,7 +12,7 @@ export const Title = styled.div`
 export const Row = styled.div`
   display: flex;
   margin-top: 20px;
-  justify-content: space-between;
+  justify-content: ${props => props.justifyContent ? props.justifyContent : 'space-between'};
 `;
 
 export const RowItem = styled.div`

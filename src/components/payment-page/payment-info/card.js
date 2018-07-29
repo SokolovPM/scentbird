@@ -7,7 +7,6 @@ import { Container, Title, Row, RowItem, Input, Label, Error } from './common-co
 import CustomSelect from './custom-select';
 
 import { months, years } from './data-utils';
-console.log('years', years)
 
 const CardData = styled.div`
   background-color: #FAFAFA;
