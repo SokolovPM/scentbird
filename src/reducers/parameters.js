@@ -6,7 +6,8 @@ const {
   CHANGE_EMAIL,
   CHECK_EMAIL,
   CHANGE_PASSWORD,
-  CHECK_PASSWORD
+  CHECK_PASSWORD,
+  GO_TO_BUY
 } = constants;
 
 const initialValues = {
@@ -18,6 +19,23 @@ const initialValues = {
   passwordError: ''
 };
 
+const checkEmail = (email) => {
+  if (!email) {
+    return 'This field is required';
+  }
+  const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return regex.test(email.toLowerCase()) ? '' : 'Wrong email format'  ;
+}
+
+const checkPassword = (password) => {
+  if (!password) {
+    return 'This field is required';
+  } else if (password.length < 10) {
+    return 'Password should not be less than 10 symbols';
+  }
+  return '';
+}
+
 export default createReducer(initialValues, {
   [CHANGE_SECURITY_CODE]: (state, { securityCode }) => {
     return {
@@ -28,22 +46,24 @@ export default createReducer(initialValues, {
 
   [CHANGE_EMAIL]: (state, { email }) => ({ email }),
   [CHECK_EMAIL]: (state, {}) => {
-    const email = state.email;
-    if (!email) {
-      return { emailError: 'This field is required' };
-    }
-    const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return { emailError: regex.test(email.toLowerCase()) ? '' : 'Wrong email format' };
+    return { emailError: checkEmail(state.email)}
   },
 
   [CHANGE_PASSWORD]: (state, { password }) => ({ password }),
   [CHECK_PASSWORD]: (state, {}) => {
-    const password = state.password;
-    if (!password) {
-      return { passwordError: 'This field is required' };
-    } else if (password.length < 10) {
-      return { passwordError: 'Password should not be less than 10 symbols' };
-    }
-    return { passwordError: '' };
+    return { passwordError: checkPassword(state.password)}
   },
+
+  [GO_TO_BUY]: (state) => {
+    const result = {};
+
+    result.emailError = checkEmail(state.email);
+    result.passwordError = checkPassword(state.password);
+
+    if (result.emailError || result.passwordError) {
+      return result;
+    } else {
+      // go to buy
+    }
+  }
 });

@@ -5,5 +5,6 @@ export default tokeys ([
   'CHANGE_EMAIL',
   'CHECK_EMAIL',
   'CHANGE_PASSWORD',
-  'CHECK_PASSWORD'
+  'CHECK_PASSWORD',
+  'GO_TO_BUY'
 ]);

@@ -5,7 +5,8 @@ const {
   CHANGE_EMAIL,
   CHECK_EMAIL,
   CHANGE_PASSWORD,
-  CHECK_PASSWORD
+  CHECK_PASSWORD,
+  GO_TO_BUY
 } = constants;
 
 export const changeSecurityCode = (securityCode) => ({
@@ -29,4 +30,8 @@ export const changePassword = (password) => ({
 
 export const checkPassword = () => ({
   type: CHECK_PASSWORD
+})
+
+export const goToBuy = () => ({
+  type: GO_TO_BUY
 })

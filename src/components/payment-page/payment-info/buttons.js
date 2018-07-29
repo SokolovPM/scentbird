@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Media from "react-media";
+import { connect } from 'react-redux';
+
+import {
+  goToBuy
+} from '../../../actions';
 
 import { Row, RowItem } from './common-components';
 
@@ -57,7 +62,7 @@ class Buttons extends Component {
           ) : (
             <Row justifyContent="flex-end">
               <Back>Back</Back>
-              <BuyBlock>
+              <BuyBlock onClick={this.props.goToBuy}>
                 <Text>BUY NOW</Text>
                 <Arrow><Icon name="buyArrow" /></Arrow>
               </BuyBlock>
@@ -69,4 +74,8 @@ class Buttons extends Component {
   }
 }
 
-export default Buttons;
+export default connect(
+  state => ({
+  }),
+  { goToBuy }
+)(Buttons);
