@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
+import Media from "react-media";
 
 import GreyCheckbox from './grey-checkbox';
 
@@ -65,7 +66,15 @@ class ProductInfo extends Component {
     return (
       <Container>
         <ProductImg>
-          <Icon name="product" />
+          <Media query="(max-width: 320px)">
+            {matches =>
+              matches ? (
+                <Icon name="product320" />
+              ) : (
+                <Icon name="product" />
+              )
+            }
+          </Media>
         </ProductImg>
         <Line />
         <Row>

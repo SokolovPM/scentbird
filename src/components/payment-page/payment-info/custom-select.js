@@ -5,6 +5,9 @@ import { Icon } from '../../icon';
 
 const Container = styled.div`
   height: 50px;
+  @media only screen and (max-width: 320px) {
+    margin-bottom: 20px;
+  }
 `;
 
 const Control = styled.div`

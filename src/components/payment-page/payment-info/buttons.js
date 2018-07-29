@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Media from "react-media";
 
 import { Row, RowItem } from './common-components';
 
@@ -26,21 +27,44 @@ const BuyBlock = styled.div`
   padding-right: 30px;
   font-size: 18px;
   cursor: pointer
+
+  @media only screen and (max-width: 320px) {
+    width: 100%;
+    margin-bottom: 30px;
+  }
 `;
 
 const Text = styled.span``;
 const Arrow = styled.span``;
 
+export const Wrapper = styled.div`
+  margin-top: 20px;
+  text-align: center;
+`;
+
 class Buttons extends Component {
   render () {
     return (
-      <Row justifyContent="flex-end">
-        <Back>Back</Back>
-        <BuyBlock>
-          <Text>BUY NOW</Text>
-          <Arrow><Icon name="buyArrow" /></Arrow>
-        </BuyBlock>
-      </Row>
+      <Media query="(max-width: 320px)">
+        {matches =>
+          matches ? (
+            <Wrapper>
+              <BuyBlock>
+                <Text>BUY NOW</Text>
+                <Arrow><Icon name="buyArrow" /></Arrow>
+              </BuyBlock>
+            </Wrapper>
+          ) : (
+            <Row justifyContent="flex-end">
+              <Back>Back</Back>
+              <BuyBlock>
+                <Text>BUY NOW</Text>
+                <Arrow><Icon name="buyArrow" /></Arrow>
+              </BuyBlock>
+            </Row>
+          )
+        }
+      </Media>
     )
   }
 }

@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
+import Media from "react-media";
 
 import Address from './address';
 import Account from './account';
 import Card from './card';
 import Buttons from './buttons';
+import Gender from './gender';
+
+import OfferHeader from '../offer-header';
 
 const Container = styled.div`
   flex-grow: 1;
+
+  @media only screen and (max-width: 320px) {
+    width: 100%;
+  }
 `;
 
 const Header = styled.div`
@@ -27,11 +35,18 @@ class PaymentInfo extends Component {
   render() {
     return (
       <Container>
-        <Header>
-          <Title>MONTH-TO-MONTH SUBSCRIPTION</Title>
-          <Subtitle>Billed monthly. Renews automatically, cancel any time. Free shipping.</Subtitle>
-        </Header>
-        <Account />
+        <Media query="(max-width: 320px)">
+          {matches =>
+            matches ? (
+              <Gender />
+            ) : (
+              <div>
+                <OfferHeader />
+                <Account />
+              </div>
+            )
+          }
+        </Media>
         <Address />
         <Card />
         <Buttons />

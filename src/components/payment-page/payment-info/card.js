@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
+import Media from "react-media";
 
 import { Icon } from '../../icon';
 
@@ -9,11 +10,18 @@ import CustomSelect from './custom-select';
 import { months, years } from './data-utils';
 
 const CardData = styled.div`
+  margin-top: 20px;
   background-color: #FAFAFA;
   padding: 10px 30px 30px ;
   width: 100%;
   min-height: 100px;
   border: 1px solid #E6E6E6;
+
+  @media only screen and (max-width: 320px) {
+    padding: 10px 20px 20px ;
+    margin-left: -20px;
+    width: 320px;
+  }
 `;
 
 const SecureMessage = styled.div`
@@ -25,6 +33,38 @@ const Text = styled.span`
   margin-left: 10px;
   position: relative;
   bottom: 12px;
+
+  @media only screen and (max-width: 320px) {
+    font-size: 12px;
+  }
+`;
+
+const CodeInput = styled(Input)`
+  @media only screen and (max-width: 320px) {
+    width: 100%;
+  }
+`;
+
+const CodeItem = styled(RowItem)`
+  @media only screen and (max-width: 320px) {
+    margin-right: 20px;
+    width: 60%;
+    min-width: 60%;
+  }
+`;
+
+const QuestionItem = styled(RowItem)`
+  @media only screen and (max-width: 320px) {
+    min-width: 30px;
+    width: 30px;
+  }
+`;
+
+const SelectItem = styled(RowItem)`
+  @media only screen and (max-width: 320px) {
+    width: 130px;
+    min-width: 130px;
+  }
 `;
 
 const CardsWrapper = styled.div`
@@ -91,47 +131,102 @@ class Card extends Component {
               <Icon name="cards" />
             </CardsWrapper>
           </Row>
-          <Row>
-            <RowItem width={70}>
-              <Input
-                placeholder="Credit card number"
-                value={number.value}
-                onChange={(e) => this.handleInput(e, 'number')}
-                onBlur={() => this.notEmptyValidate('number')}
-                validation={number.validation}
-                isLight={true}
-              />
-              <Label>Credit card number</Label>
-              {!number.validation && <Error>This field is required</Error>}
-            </RowItem>
-            <RowItem width={25}>
-              <Input
-                type="number"
-                placeholder="Security code"
-                value={code.value}
-                onChange={(e) => this.handleInput(e, 'code')}
-                onBlur={() => this.notEmptyValidate('code')}
-                validation={code.validation}
-                isLight={true}
-              />
-              <Label>Security code</Label>
-              {!code.validation && <Error>This field is required</Error>}
-            </RowItem>
-            <RowItem width={5} isLastBlock={true}>
-              <BlackQuestion>?</BlackQuestion>
-            </RowItem>
-          </Row>
-          <Row>
-            <RowItem width={25} style={{ paddingRight: '0', marginRight: '10px' }}>
-              <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
-            </RowItem>
-            <RowItem width={25} isLastBlock={true} style={{ paddingLeft: '0', marginLeft: '10px' }}>
-              <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
-            </RowItem>
-            <RowItem>
-              <ExpirationTitle>Exp.</ExpirationTitle>
-            </RowItem>
-          </Row>
+
+
+
+          <Media query="(max-width: 320px)">
+            {matches =>
+              matches ? (
+                <div>
+                  <Row>
+                    <RowItem width={70}>
+                      <Input
+                        placeholder="Credit card number"
+                        value={number.value}
+                        onChange={(e) => this.handleInput(e, 'number')}
+                        onBlur={() => this.notEmptyValidate('number')}
+                        validation={number.validation}
+                        isLight={true}
+                      />
+                      <Label>Credit card number</Label>
+                      {!number.validation && <Error>This field is required</Error>}
+                    </RowItem>
+                  </Row>
+                  <Row>
+                    <SelectItem>
+                      <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
+                    </SelectItem>
+                    <SelectItem>
+                      <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
+                    </SelectItem>
+                  </Row>
+                  <Row style={{ justifyContent: 'flex-start' }}>
+                    <CodeItem>
+                      <CodeInput
+                        type="number"
+                        placeholder="Security code"
+                        value={code.value}
+                        onChange={(e) => this.handleInput(e, 'code')}
+                        onBlur={() => this.notEmptyValidate('code')}
+                        validation={code.validation}
+                        isLight={true}
+                      />
+                      <Label>Security code</Label>
+                      {!code.validation && <Error>This field is required</Error>}
+                    </CodeItem>
+                    <QuestionItem>
+                      <BlackQuestion>?</BlackQuestion>
+                    </QuestionItem>
+                  </Row>
+                </div>
+              ) : (
+                <div>
+                  <Row>
+                    <RowItem width={70}>
+                      <Input
+                        placeholder="Credit card number"
+                        value={number.value}
+                        onChange={(e) => this.handleInput(e, 'number')}
+                        onBlur={() => this.notEmptyValidate('number')}
+                        validation={number.validation}
+                        isLight={true}
+                      />
+                      <Label>Credit card number</Label>
+                      {!number.validation && <Error>This field is required</Error>}
+                    </RowItem>
+                    <RowItem width={25}>
+                      <CodeInput
+                        type="number"
+                        placeholder="Security code"
+                        value={code.value}
+                        onChange={(e) => this.handleInput(e, 'code')}
+                        onBlur={() => this.notEmptyValidate('code')}
+                        validation={code.validation}
+                        isLight={true}
+                      />
+                      <Label>Security code</Label>
+                      {!code.validation && <Error>This field is required</Error>}
+                    </RowItem>
+                    <RowItem width={5} isLastBlock={true}>
+                      <BlackQuestion>?</BlackQuestion>
+                    </RowItem>
+                  </Row>
+                  <Row>
+                    <RowItem width={25} style={{ paddingRight: '0', marginRight: '10px' }}>
+                      <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
+                    </RowItem>
+                    <RowItem width={25} isLastBlock={true} style={{ paddingLeft: '0', marginLeft: '10px' }}>
+                      <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
+                    </RowItem>
+                    <RowItem>
+                      <ExpirationTitle>Exp.</ExpirationTitle>
+                    </RowItem>
+                  </Row>
+                </div>
+              )
+            }
+          </Media>
+
         </CardData>
       </Container>
     )

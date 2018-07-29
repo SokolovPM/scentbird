@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
+import Media from "react-media";
 
 import { Container, Title, Row, RowItem, Input, Label, Error } from './common-components';
 
@@ -11,6 +12,20 @@ const Offer = styled.div`
   font-size: 14px;
   padding-top: 17px;
   padding-left: 10px;
+`;
+
+
+export const SelectItem = styled.div`
+  width: 33%;
+  ${props => props.isLastBlock ? 'padding-left: 10px;' : 'padding-right: 10px; padding-left: 10px;'}
+  position: relative;
+
+  @media only screen and (max-width: 320px) {
+    min-width: 280px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 20px;
+  }
 `;
 
 const states = [
@@ -155,12 +170,12 @@ class Address extends Component {
             <Label>Postal code</Label>
             {!postcode.validation && <Error>{postcode.error}</Error>}
           </RowItem>
-          <RowItem width={33} style={{ paddingRight: '0', marginRight: '10px' }}>
+          <SelectItem>
             <CustomSelect options={states} />
-          </RowItem>
-          <RowItem width={33} isLastBlock={true} style={{ paddingLeft: '0', marginLeft: '10px' }}>
+          </SelectItem>
+          <SelectItem isLastBlock={true}>
             <CustomSelect options={states} />
-          </RowItem>
+          </SelectItem>
         </Row>
         <Row>
           <RowItem width={100} style={{ padding: '0' }}>
@@ -185,11 +200,20 @@ class Address extends Component {
             />
             <Label>Mobile number</Label>
           </RowItem>
-          <RowItem isLastBlock={true}>
-            <Offer>
-              We may send you special discounts and offers
-            </Offer>
-          </RowItem>
+          <Media query="(max-width: 320px)">
+            {matches =>
+              matches ? (
+                null
+              ) : (
+                <RowItem isLastBlock={true}>
+                  <Offer>
+                    We may send you special discounts and offers
+                  </Offer>
+                </RowItem>
+              )
+            }
+          </Media>
+
         </Row>
         <Row>
           <PinkCheckbox text="Use this address as my billing address" id="billingAddress" />
