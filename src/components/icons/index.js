@@ -14,6 +14,10 @@ import man from './man-gender.svg';
 import delivery320 from './delivery320.svg';
 import product320 from './product320.svg';
 
+import visa from './visa.svg';
+import mastercard from './mastercard.svg';
+import express from './express.svg';
+
 export const icons = {
   delivery,
   product,
@@ -28,5 +32,8 @@ export const icons = {
   man,
   delivery320,
   product320,
-  logo320
+  logo320,
+  visa,
+  mastercard,
+  express
 }

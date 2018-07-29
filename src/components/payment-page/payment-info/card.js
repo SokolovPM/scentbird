@@ -68,6 +68,7 @@ const SelectItem = styled(RowItem)`
 `;
 
 const CardsWrapper = styled.div`
+  display: flex;
 `;
 
 const BlackQuestion = styled.div`
@@ -90,16 +91,30 @@ const ExpirationTitle = styled.div`
   padding-top: 14px;
 `;
 
+const cardRegexps = {
+  mc: /^(?:5[1-5][0-9]{14})$/,
+	vi: /^(?:4[0-9]{12}(?:[0-9]{3})?)$/,
+	ax: /^(?:3[47][0-9]{13})$/
+};
+
+const CardIcon = styled.div`
+  margin-left: 10px;
+  ${props => props.selected && 'border-top: 1px solid #FF408E;'}
+  cursor: pointer;
+`;
+
 class Card extends Component {
   state = {
     number: {
       value: '',
-      validation: true
+      validation: true,
+      error: ''
     },
     code: {
       value: '',
       validation: true
-    }
+    },
+    cardType: 'vi',
   }
 
   handleInput = (e, name) => {
@@ -114,10 +129,40 @@ class Card extends Component {
     this.setState({ [name]: field });
   }
 
+  cardNumberValidation = () => {
+    const { number, cardType } = this.state;
+    if (!number.value) {
+      number.validation = false;
+      number.error = 'This field is required';
+    } else {
+      const result = cardRegexps[cardType].test(number.value.trim());
+      number.validation = result;
+      number.error = result ? '' : 'Wrong card number format'
+    }
+    this.setState({ number });
+  }
+
+  changeCardType = (cardType) => {
+    this.setState({ cardType }, this.cardNumberValidation);
+  }
+
+  codeValidation = () => {
+    const code = this.state.code;
+    if (!code.value) {
+      code.validation = false;
+      code.error = 'This field is required';
+    } else if (code.value.length !== 3) {
+      code.validation = false;
+      code.error = 'Wrong security code format';
+    } else {
+      code.validation = true;
+      code.error = '';
+    }
+    this.setState({ code });
+  }
+
   render () {
-
     const { number, code } = this.state;
-
     return (
       <Container>
         <Title>Secure credit card payment</Title>
@@ -128,12 +173,17 @@ class Card extends Component {
               <Text>128-BIT ENCRYPTION. YOU’RE SAFE</Text>
             </SecureMessage>
             <CardsWrapper>
-              <Icon name="cards" />
+              <CardIcon onClick={() => this.changeCardType('vi')} selected={this.state.cardType === 'vi'}>
+                <Icon name="visa" />
+              </CardIcon>
+              <CardIcon onClick={() => this.changeCardType('mc')} selected={this.state.cardType === 'mc'}>
+                <Icon name="mastercard" />
+              </CardIcon>
+              <CardIcon onClick={() => this.changeCardType('ax')} selected={this.state.cardType === 'ax'}>
+                <Icon name="express" />
+              </CardIcon>
             </CardsWrapper>
           </Row>
-
-
-
           <Media query="(max-width: 320px)">
             {matches =>
               matches ? (
@@ -141,15 +191,16 @@ class Card extends Component {
                   <Row>
                     <RowItem width={70}>
                       <Input
+                        type="number"
                         placeholder="Credit card number"
                         value={number.value}
                         onChange={(e) => this.handleInput(e, 'number')}
-                        onBlur={() => this.notEmptyValidate('number')}
+                        onBlur={this.cardNumberValidation}
                         validation={number.validation}
                         isLight={true}
                       />
                       <Label>Credit card number</Label>
-                      {!number.validation && <Error>This field is required</Error>}
+                      {!number.validation && <Error>{number.error}</Error>}
                     </RowItem>
                   </Row>
                   <Row>
@@ -172,7 +223,7 @@ class Card extends Component {
                         isLight={true}
                       />
                       <Label>Security code</Label>
-                      {!code.validation && <Error>This field is required</Error>}
+                      {!code.validation && <Error>{code.error}</Error>}
                     </CodeItem>
                     <QuestionItem>
                       <BlackQuestion>?</BlackQuestion>
@@ -184,15 +235,16 @@ class Card extends Component {
                   <Row>
                     <RowItem width={70}>
                       <Input
+                        type="number"
                         placeholder="Credit card number"
                         value={number.value}
                         onChange={(e) => this.handleInput(e, 'number')}
-                        onBlur={() => this.notEmptyValidate('number')}
+                        onBlur={this.cardNumberValidation}
                         validation={number.validation}
                         isLight={true}
                       />
                       <Label>Credit card number</Label>
-                      {!number.validation && <Error>This field is required</Error>}
+                      {!number.validation && <Error>{number.error}</Error>}
                     </RowItem>
                     <RowItem width={25}>
                       <CodeInput
@@ -200,12 +252,12 @@ class Card extends Component {
                         placeholder="Security code"
                         value={code.value}
                         onChange={(e) => this.handleInput(e, 'code')}
-                        onBlur={() => this.notEmptyValidate('code')}
+                        onBlur={this.codeValidation}
                         validation={code.validation}
                         isLight={true}
                       />
                       <Label>Security code</Label>
-                      {!code.validation && <Error>This field is required</Error>}
+                      {!code.validation && <Error>{code.error}</Error>}
                     </RowItem>
                     <RowItem width={5} isLastBlock={true}>
                       <BlackQuestion>?</BlackQuestion>
