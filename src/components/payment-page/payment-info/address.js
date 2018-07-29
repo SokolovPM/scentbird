@@ -14,7 +14,6 @@ const Offer = styled.div`
   padding-left: 10px;
 `;
 
-
 export const SelectItem = styled.div`
   width: 33%;
   ${props => props.isLastBlock ? 'padding-left: 10px;' : 'padding-right: 10px; padding-left: 10px;'}

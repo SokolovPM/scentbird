@@ -8,13 +8,13 @@ class Account extends Component {
     email: {
       value: '',
       validation: true,
-      required: true
+      error: ''
     },
 
     password: {
       value: '',
       validation: true,
-      required: true
+      error: ''
     },
   }
 
@@ -30,34 +30,37 @@ class Account extends Component {
     this.setState({ password })
   }
 
-  emailOnBlur = () => {
-    const email = this.state.email;
-    if (!email.value) {
-
-    } else {
-      this.emailValidation();
-    }
-  }
-
-  passwordOnBlur = () => {
-    const password = this.state.password;
-    if (!password.value) {
-
-    } else {
-      this.passwordValidation();
-    }
-  }
-
   emailValidation = () => {
     const email = this.state.email;
+    if (!email.value) {
+      email.validation = false;
+      email.error = 'This field is required';
+      this.setState({ validation: false, });
+      return;
+    }
     const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    email.validation = regex.test(email.value.toLowerCase());
-    this.setState({ email })
+    if (regex.test(email.value.toLowerCase())) {
+      email.validation = true;
+      email.error = '';
+    } else {
+      email.validation = false;
+      email.error = 'Wrong email format';
+    }
+    this.setState({ email });
   }
 
   passwordValidation = () => {
     const password = this.state.password;
-    password.validation = password.value.length >= 10;
+    if (!password.value) {
+      password.validation = false;
+      password.error = 'This field is required';
+    } else if (password.value.length < 10) {
+      password.validation = false;
+      password.error = 'Password should not be less than 10 symbols';
+    } else {
+      password.validation = true;
+      password.error = '';
+    }
     this.setState({ password });
   }
 
@@ -73,12 +76,12 @@ class Account extends Component {
               placeholder="Email address"
               value={email.value}
               onChange={this.handleEmail}
-              onBlur={this.emailOnBlur}
+              onBlur={this.emailValidation}
               validation={email.validation}
               isLight={true}
             />
             <Label>Email address</Label>
-            {!email.validation && <Error>Wrong email</Error>}
+            {!email.validation && <Error>{email.error}</Error>}
           </RowItem>
           <RowItem isLastBlock={true}>
             <Input
@@ -86,11 +89,11 @@ class Account extends Component {
               placeholder="Password"
               value={password.value}
               onChange={this.handlePassword}
-              onBlur={this.passwordOnBlur}
+              onBlur={this.passwordValidation}
               validation={password.validation}
             />
             <Label>Password</Label>
-            {!password.validation && <Error>Password should not be less than 10 symbols</Error>}
+            {!password.validation && <Error>{password.error}</Error>}
           </RowItem>
         </Row>
       </Container>
