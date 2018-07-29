@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
 import Media from "react-media";
-
 import { connect } from 'react-redux';
+
 import {
   changeSecurityCode
 } from '../../../actions';
