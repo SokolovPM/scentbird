@@ -2,6 +2,7 @@ import constants from '../constants';
 
 const {
   CHANGE_SECURITY_CODE,
+  CHECK_SECURITY_CODE,
   CHANGE_EMAIL,
   CHECK_EMAIL,
   CHANGE_PASSWORD,
@@ -10,12 +11,27 @@ const {
   CHANGE_FIRST_NAME,
   CHECK_FIRST_NAME,
   CHANGE_LAST_NAME,
-  CHECK_LAST_NAME
+  CHECK_LAST_NAME,
+  CHANGE_STREET_ADDRESS,
+  CHECK_STREET_ADDRESS,
+  CHANGE_APARTMENT,
+  CHANGE_POSTCODE,
+  CHECK_POSTCODE,
+  CHANGE_COUNTRY,
+  CHECK_COUNTRY,
+  CHANGE_PHONE,
+  CHANGE_CARD_TYPE,
+  CHANGE_CARD_NUMBER,
+  CHECK_CARD_NUMBER
 } = constants;
 
 export const changeSecurityCode = (securityCode) => ({
   type: CHANGE_SECURITY_CODE,
   securityCode
+})
+
+export const checkSecurityCode = () => ({
+  type: CHECK_SECURITY_CODE
 })
 
 export const changeEmail = (email) => ({
@@ -50,6 +66,53 @@ export const changeLastName = (lastName) => ({
 })
 export const checkLastName = () => ({
   type: CHECK_LAST_NAME
+})
+
+export const changeStreetAddress = (streetAddress) => ({
+  type: CHANGE_STREET_ADDRESS,
+  streetAddress
+})
+export const checkStreetAddress = () => ({
+  type: CHECK_STREET_ADDRESS
+})
+
+export const changeApartment = (apartment) => ({
+  type: CHANGE_APARTMENT,
+  apartment
+})
+
+export const changePostcode = (postcode) => ({
+  type: CHANGE_POSTCODE,
+  postcode
+})
+export const checkPostcode = () => ({
+  type: CHECK_POSTCODE
+})
+
+export const changeCountry = (country) => ({
+  type: CHANGE_COUNTRY,
+  country
+})
+export const checkCountry = () => ({
+  type: CHECK_COUNTRY
+})
+
+export const changePhone = (phone) => ({
+  type: CHANGE_PHONE,
+  phone
+})
+
+export const changeCardType = (cardType) => ({
+  type: CHANGE_CARD_TYPE,
+  cardType
+})
+
+export const changeCardNumber = (cardNumber) => ({
+  type: CHANGE_CARD_NUMBER,
+  cardNumber
+})
+export const checkCardNumber = () => ({
+  type: CHECK_CARD_NUMBER
 })
 
 export const goToBuy = () => ({

@@ -26,7 +26,6 @@ class Gender extends Component {
   }
 
   render() {
-    console.log('render', this.state)
     return (
       <Container>
         <Title>Choose your subscription type</Title>

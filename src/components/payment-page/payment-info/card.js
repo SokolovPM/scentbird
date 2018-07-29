@@ -4,7 +4,12 @@ import Media from "react-media";
 import { connect } from 'react-redux';
 
 import {
-  changeSecurityCode
+  changeCardType,
+  changeCardNumber,
+  checkCardNumber,
+
+  changeSecurityCode,
+  checkSecurityCode
 } from '../../../actions';
 
 import { Icon } from '../../icon';
@@ -116,192 +121,153 @@ const CodeError = styled.div`
   margin-top: 30px;
 `;
 
-class Card extends Component {
-  state = {
-    number: {
-      value: '',
-      validation: true,
-      error: ''
-    },
-    code: {
-      value: '',
-      validation: true
-    },
-    cardType: 'vi',
-  }
-
-  handleInput = (e, name) => {
-    const field = this.state[name];
-    field.value = e.target.value;
-    this.setState({ [name]: field });
-  }
-
-  notEmptyValidate = (name) => {
-    const field = this.state[name];
-    field.validation = !!field.value;
-    this.setState({ [name]: field });
-  }
-
-  cardNumberValidation = () => {
-    const { number, cardType } = this.state;
-    if (!number.value) {
-      number.validation = false;
-      number.error = 'This field is required';
-    } else {
-      const result = cardRegexps[cardType].test(number.value.trim());
-      number.validation = result;
-      number.error = result ? '' : 'Wrong card number format'
-    }
-    this.setState({ number });
-  }
-
-  changeCardType = (cardType) => {
-    this.setState({ cardType }, this.cardNumberValidation);
-  }
-
-  codeValidation = () => {
-    const code = this.state.code;
-    if (!code.value) {
-      code.validation = false;
-      code.error = 'This field is required';
-    } else if (code.value.length !== 3) {
-      code.validation = false;
-      code.error = 'Wrong security code format';
-    } else {
-      code.validation = true;
-      code.error = '';
-      this.props.changeSecurityCode(code.value)
-    }
-    this.setState({ code });
-  }
-
-  render () {
-    const { number, code } = this.state;
-    return (
-      <Container>
-        <Title>Secure credit card payment</Title>
-        <CardData error={this.props.securityCodeError}>
-          <Row>
-            <SecureMessage>
-              <Icon name="shield" />
-              <Text>128-BIT ENCRYPTION. YOU’RE SAFE</Text>
-            </SecureMessage>
-            <CardsWrapper>
-              <CardIcon onClick={() => this.changeCardType('vi')} selected={this.state.cardType === 'vi'}>
-                <Icon name="visa" />
-              </CardIcon>
-              <CardIcon onClick={() => this.changeCardType('mc')} selected={this.state.cardType === 'mc'}>
-                <Icon name="mastercard" />
-              </CardIcon>
-              <CardIcon onClick={() => this.changeCardType('ax')} selected={this.state.cardType === 'ax'}>
-                <Icon name="express" />
-              </CardIcon>
-            </CardsWrapper>
-          </Row>
-          <Media query="(max-width: 320px)">
-            {matches =>
-              matches ? (
-                <div>
-                  <Row>
-                    <RowItem width={70}>
-                      <Input
-                        type="number"
-                        placeholder="Credit card number"
-                        value={number.value}
-                        onChange={(e) => this.handleInput(e, 'number')}
-                        onBlur={this.cardNumberValidation}
-                        validation={number.validation}
-                        isLight={true}
-                      />
-                      <Label>Credit card number</Label>
-                      {!number.validation && <Error>{number.error}</Error>}
-                    </RowItem>
-                  </Row>
-                  <Row>
-                    <SelectItem>
-                      <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
-                    </SelectItem>
-                    <SelectItem>
-                      <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
-                    </SelectItem>
-                  </Row>
-                  <Row style={{ justifyContent: 'flex-start' }}>
-                    <CodeItem>
-                      <CodeInput
-                        type="number"
-                        placeholder="Security code"
-                        value={code.value}
-                        onChange={(e) => this.handleInput(e, 'code')}
-                        onBlur={this.codeValidation }
-                        validation={code.validation}
-                        isLight={true}
-                      />
-                      <Label>Security code</Label>
-                      {!code.validation && <Error>{code.error}</Error>}
-                    </CodeItem>
-                    <QuestionItem>
-                      <BlackQuestion>?</BlackQuestion>
-                    </QuestionItem>
-                  </Row>
-                </div>
-              ) : (
-                <div>
-                  <Row>
-                    <RowItem width={70}>
-                      <Input
-                        type="number"
-                        placeholder="Credit card number"
-                        value={number.value}
-                        onChange={(e) => this.handleInput(e, 'number')}
-                        onBlur={this.cardNumberValidation}
-                        validation={number.validation}
-                        isLight={true}
-                      />
-                      <Label>Credit card number</Label>
-                      {!number.validation && <Error>{number.error}</Error>}
-                    </RowItem>
-                    <RowItem width={25}>
-                      <CodeInput
-                        type="number"
-                        placeholder="Security code"
-                        value={code.value}
-                        onChange={(e) => this.handleInput(e, 'code')}
-                        onBlur={this.codeValidation}
-                        validation={code.validation}
-                        isLight={true}
-                      />
-                      <Label>Security code</Label>
-                      {!code.validation && <Error>{code.error}</Error>}
-                    </RowItem>
-                    <RowItem width={5} isLastBlock={true}>
-                      <BlackQuestion>?</BlackQuestion>
-                    </RowItem>
-                  </Row>
-                  <Row>
-                    <RowItem width={25} style={{ paddingRight: '0', marginRight: '10px' }}>
-                      <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
-                    </RowItem>
-                    <RowItem width={25} isLastBlock={true} style={{ paddingLeft: '0', marginLeft: '10px' }}>
-                      <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
-                    </RowItem>
-                    <RowItem>
-                      <ExpirationTitle>Exp.</ExpirationTitle>
-                    </RowItem>
-                  </Row>
-                </div>
-              )
-            }
-          </Media>
-        </CardData>
-        {this.props.securityCodeError && <CodeError>ERROR! CURRENT SECURITY CODE IS NOT AVAILABLE</CodeError>}
-      </Container>
-    )
-  }
-}
+const Card = ({
+  cardType,
+  changeCardType,
+  cardNumber,
+  cardNumberError,
+  changeCardNumber,
+  checkCardNumber,
+  securityCode,
+  securityCodeError,
+  wrongSecurityCode,
+  changeSecurityCode,
+  checkSecurityCode
+}) => (
+  <Container>
+    <Title>Secure credit card payment</Title>
+    <CardData error={securityCodeError}>
+      <Row>
+        <SecureMessage>
+          <Icon name="shield" />
+          <Text>128-BIT ENCRYPTION. YOU’RE SAFE</Text>
+        </SecureMessage>
+        <CardsWrapper>
+          <CardIcon onClick={() => changeCardType('vi')} selected={cardType === 'vi'}>
+            <Icon name="visa" />
+          </CardIcon>
+          <CardIcon onClick={() => changeCardType('mc')} selected={cardType === 'mc'}>
+            <Icon name="mastercard" />
+          </CardIcon>
+          <CardIcon onClick={() => changeCardType('ax')} selected={cardType === 'ax'}>
+            <Icon name="express" />
+          </CardIcon>
+        </CardsWrapper>
+      </Row>
+      <Media query="(max-width: 320px)">
+        {matches =>
+          matches ? (
+            <div>
+              <Row>
+                <RowItem width={70}>
+                  <Input
+                    type="number"
+                    placeholder="Credit card number"
+                    value={cardNumber}
+                    onChange={(e) => changeCardNumber(e.target.value)}
+                    onBlur={checkCardNumber}
+                    validation={!cardNumberError}
+                    isLight={true}
+                  />
+                  <Label>Credit card number</Label>
+                  {cardNumberError && <Error>{cardNumberError}</Error>}
+                </RowItem>
+              </Row>
+              <Row>
+                <SelectItem>
+                  <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
+                </SelectItem>
+                <SelectItem>
+                  <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
+                </SelectItem>
+              </Row>
+              <Row style={{ justifyContent: 'flex-start' }}>
+                <CodeItem>
+                  <CodeInput
+                    type="number"
+                    placeholder="Security code"
+                    value={securityCode}
+                    onChange={(e) => changeSecurityCode(e.target.value)}
+                    onBlur={checkSecurityCode}
+                    validation={!securityCodeError}
+                    isLight={true}
+                  />
+                  <Label>Security code</Label>
+                  {securityCodeError && <Error>{securityCodeError}</Error>}
+                </CodeItem>
+                <QuestionItem>
+                  <BlackQuestion>?</BlackQuestion>
+                </QuestionItem>
+              </Row>
+            </div>
+          ) : (
+            <div>
+              <Row>
+                <RowItem width={70}>
+                  <Input
+                    type="number"
+                    placeholder="Credit card number"
+                    value={cardNumber}
+                    onChange={(e) => changeCardNumber(e.target.value)}
+                    onBlur={checkCardNumber}
+                    validation={!cardNumberError}
+                    isLight={true}
+                  />
+                  <Label>Credit card number</Label>
+                  {cardNumberError && <Error>{cardNumberError}</Error>}
+                </RowItem>
+                <RowItem width={25}>
+                  <CodeInput
+                    type="number"
+                    placeholder="Security code"
+                    value={securityCode}
+                    onChange={(e) => changeSecurityCode(e.target.value)}
+                    onBlur={checkSecurityCode}
+                    validation={!securityCodeError}
+                    isLight={true}
+                  />
+                  <Label>Security code</Label>
+                  {securityCodeError && <Error>{securityCodeError}</Error>}
+                </RowItem>
+                <RowItem width={5} isLastBlock={true}>
+                  <BlackQuestion>?</BlackQuestion>
+                </RowItem>
+              </Row>
+              <Row>
+                <RowItem width={25} style={{ paddingRight: '0', marginRight: '10px' }}>
+                  <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
+                </RowItem>
+                <RowItem width={25} isLastBlock={true} style={{ paddingLeft: '0', marginLeft: '10px' }}>
+                  <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
+                </RowItem>
+                <RowItem>
+                  <ExpirationTitle>Exp.</ExpirationTitle>
+                </RowItem>
+              </Row>
+            </div>
+          )
+        }
+      </Media>
+    </CardData>
+    {wrongSecurityCode && <CodeError>ERROR! CURRENT SECURITY CODE IS NOT AVAILABLE</CodeError>}
+  </Container>
+)
 
 export default connect(
   state => ({
-    securityCodeError: state.parameters.securityCodeError
+    cardType: state.parameters.cardType,
+    cardNumber: state.parameters.cardNumber,
+    cardNumberError: state.parameters.cardNumberError,
+
+    securityCode: state.parameters.securityCode,
+    securityCodeError: state.parameters.securityCodeError,
+    wrongSecurityCode: state.parameters.wrongSecurityCode
   }),
-  { changeSecurityCode }
+  {
+    changeCardType,
+    changeCardNumber,
+    checkCardNumber,
+    changeSecurityCode,
+    checkSecurityCode
+  }
 )(Card);

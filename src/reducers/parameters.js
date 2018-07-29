@@ -3,6 +3,7 @@ import createReducer from '../utils/createReducer';
 
 const {
   CHANGE_SECURITY_CODE,
+  CHECK_SECURITY_CODE,
   CHANGE_EMAIL,
   CHECK_EMAIL,
   CHANGE_PASSWORD,
@@ -11,18 +12,41 @@ const {
   CHANGE_FIRST_NAME,
   CHECK_FIRST_NAME,
   CHANGE_LAST_NAME,
-  CHECK_LAST_NAME
+  CHECK_LAST_NAME,
+  CHANGE_STREET_ADDRESS,
+  CHECK_STREET_ADDRESS,
+  CHANGE_APARTMENT,
+  CHANGE_POSTCODE,
+  CHECK_POSTCODE,
+  CHANGE_COUNTRY,
+  CHECK_COUNTRY,
+  CHANGE_PHONE,
+  CHANGE_CARD_TYPE,
+  CHANGE_CARD_NUMBER,
+  CHECK_CARD_NUMBER
 } = constants;
 
 const initialValues = {
   securityCode: '',
   securityCodeError: false,
+  wrongSecurityCode: false,
   email: '',
   emailError: '',
   password: '',
   passwordError: '',
   firstName: '',
-  firstNameError: ''
+  firstNameError: '',
+  streetAddress: '',
+  streetAddressError: '',
+  apartment: '',
+  postcode: '',
+  postcodeError: '',
+  country: '',
+  countryError: '',
+  phone: '',
+  cardType: 'vi',
+  cardNumber: '',
+  cardNumberError: ''
 };
 
 const checkEmail = (email) => {
@@ -42,12 +66,42 @@ const checkPassword = (password) => {
   return '';
 }
 
+const checkPostcode = (postcode) => {
+  if (!postcode) {
+    return 'This field is required';
+  } else if (postcode.length !== 6) {
+    return 'The postal code must contain six digits';
+  } else {
+    return '';
+  }
+}
+
+const cardRegexps = {
+  mc: /^(?:5[1-5][0-9]{14})$/,
+	vi: /^(?:4[0-9]{12}(?:[0-9]{3})?)$/,
+	ax: /^(?:3[47][0-9]{13})$/
+};
+
+const checkCardNumber = (cardNumber, cardType) => {
+  if (!cardNumber) {
+    return'This field is required';
+  }
+  return cardRegexps[cardType].test(cardNumber.trim()) ? '' : 'Wrong card number format'
+}
+
+const checkSecurityCode = (securityCode) => {
+  if (!securityCode) {
+    return 'This field is required';
+  } else if (securityCode.length !== 3) {
+    return 'Wrong security code format';
+  }
+  return'';
+}
+
 export default createReducer(initialValues, {
-  [CHANGE_SECURITY_CODE]: (state, { securityCode }) => {
-    return {
-      securityCode,
-      securityCodeError: securityCode === '111'
-    };
+  [CHANGE_SECURITY_CODE]: (state, { securityCode }) => ({ securityCode }),
+  [CHECK_SECURITY_CODE]: (state, {}) => {
+    return { securityCodeError: checkSecurityCode(state.securityCode), wrongSecurityCode: state.securityCode === '111' }
   },
 
   [CHANGE_EMAIL]: (state, { email }) => ({ email }),
@@ -70,8 +124,32 @@ export default createReducer(initialValues, {
     return { lastNameError: state.lastName ? '' : 'This field is required'}
   },
 
+  [CHANGE_STREET_ADDRESS]: (state, { streetAddress }) => ({ streetAddress }),
+  [CHECK_STREET_ADDRESS]: (state, {}) => {
+    return { streetAddressError: state.streetAddress ? '' : 'This field is required'}
+  },
+
+  [CHANGE_APARTMENT]: (state, { apartment }) => ({ apartment }),
+
+  [CHANGE_POSTCODE]: (state, { postcode }) => ({ postcode }),
+  [CHECK_POSTCODE]: (state, {}) => {
+    return { postcodeError: checkPostcode(state.postcode)}
+  },
+
+  [CHANGE_COUNTRY]: (state, { country }) => ({ country }),
+  [CHECK_COUNTRY]: (state, {}) => {
+    return { countryError: state.country ? '' : 'This field is required'}
+  },
+
+  [CHANGE_PHONE]: (state, { phone }) => ({ phone }),
+
+  [CHANGE_CARD_TYPE]: (state, { cardType }) => ({ cardType }),
 
 
+  [CHANGE_CARD_NUMBER]: (state, { cardNumber }) => ({ cardNumber }),
+  [CHECK_CARD_NUMBER]: (state, {}) => {
+    return { cardNumberError: checkCardNumber(state.cardNumber, state.cardType)}
+  },
 
 
   [GO_TO_BUY]: (state) => {
@@ -81,9 +159,17 @@ export default createReducer(initialValues, {
     result.passwordError = checkPassword(state.password);
     result.firstNameError = state.firstName ? '' : 'This field is required';
     result.lastNameError = state.lastName ? '' : 'This field is required';
+    result.streetAddressError = state.streetAddress ? '' : 'This field is required';
+    result.postcodeError = checkPostcode(state.postcode);
+    result.countryError = state.country ? '' : 'This field is required';
+    result.cardNumberError = checkCardNumber(state.cardNumber, state.cardType);
+    result.securityCodeError = checkSecurityCode(state.securityCode);
+    result.wrongSecurityCode = state.securityCode === '111';
 
     if (result.emailError || result.passwordError || result.firstNameError ||
-      result.lastNameError
+      result.lastNameError || result.streetAddressError || result.postcodeError ||
+      result.countryError || result.cardNumberError || result.securityCodeError ||
+      result.wrongSecurityCode
     ) {
       return result;
     } else {
