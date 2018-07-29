@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import styled  from 'styled-components';
 import Media from "react-media";
 
+import { connect } from 'react-redux';
+import {
+  changeSecurityCode
+} from '../../../actions';
+
 import { Icon } from '../../icon';
 
 import { Container, Title, Row, RowItem, Input, Label, Error } from './common-components';
@@ -16,7 +21,6 @@ const CardData = styled.div`
   width: 100%;
   min-height: 100px;
   border: 1px solid #E6E6E6;
-
   @media only screen and (max-width: 320px) {
     padding: 10px 20px 20px ;
     margin-left: -20px;
@@ -103,6 +107,15 @@ const CardIcon = styled.div`
   cursor: pointer;
 `;
 
+const CodeError = styled.div`
+  border: 2px solid #ff0000;
+  font-size: 18px;
+  padding: 30px;
+  text-align: center;
+  color: #ff0000;
+  margin-top: 30px;
+`;
+
 class Card extends Component {
   state = {
     number: {
@@ -157,6 +170,7 @@ class Card extends Component {
     } else {
       code.validation = true;
       code.error = '';
+      this.props.changeSecurityCode(code.value)
     }
     this.setState({ code });
   }
@@ -166,7 +180,7 @@ class Card extends Component {
     return (
       <Container>
         <Title>Secure credit card payment</Title>
-        <CardData>
+        <CardData error={this.props.securityCodeError}>
           <Row>
             <SecureMessage>
               <Icon name="shield" />
@@ -218,7 +232,7 @@ class Card extends Component {
                         placeholder="Security code"
                         value={code.value}
                         onChange={(e) => this.handleInput(e, 'code')}
-                        onBlur={() => this.notEmptyValidate('code')}
+                        onBlur={this.codeValidation }
                         validation={code.validation}
                         isLight={true}
                       />
@@ -278,11 +292,16 @@ class Card extends Component {
               )
             }
           </Media>
-
         </CardData>
+        {this.props.securityCodeError && <CodeError>ERROR! CURRENT SECURITY CODE IS NOT AVAILABLE</CodeError>}
       </Container>
     )
   }
 }
 
-export default Card;
+export default connect(
+  state => ({
+    securityCodeError: state.parameters.securityCodeError
+  }),
+  { changeSecurityCode }
+)(Card);
