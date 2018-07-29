@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
 
+import GreyCheckbox from './grey-checkbox';
+
 import { Icon } from '../icon';
 
 const Container = styled.div`
@@ -40,9 +42,22 @@ const Value = styled.div`
   text-align: right;
 `;
 
+const DiscountValue = styled(Value)`
+  color: #FF408E;
+`;
+
+const CreditValue = styled(Value)`
+  flex-grow: 1;
+  margin-right: 10px;
+`;
+
 const Link = styled.span`
   color: #FF408E;
   border-bottom: 1px dashed #979797;
+`;
+
+const CheckboxItem = styled.div`
+  width=
 `;
 
 class ProductInfo extends Component {
@@ -67,11 +82,14 @@ class ProductInfo extends Component {
         </Row>
         <Row>
           <Name>Discount</Name>
-          <Value>-$5</Value>
+          <DiscountValue>-$5</DiscountValue>
         </Row>
         <Row>
           <Name>Credit (Balance $100)</Name>
-          <Value>$50</Value>
+          <CreditValue>$50</CreditValue>
+          <div style={{ width: '5%' }}>
+            <GreyCheckbox text="" id="credit"/>
+          </div>
         </Row>
         <Line />
         <RowTotal>

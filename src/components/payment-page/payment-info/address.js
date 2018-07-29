@@ -4,6 +4,8 @@ import styled  from 'styled-components';
 import { Container, Title, Row, RowItem, Input, Label, Error } from './common-components';
 
 import CustomSelect from './custom-select'
+import PinkCheckbox from './pink-checkbox';
+
 const Offer = styled.div`
   color: #000000;
   font-size: 14px;
@@ -188,6 +190,9 @@ class Address extends Component {
               We may send you special discounts and offers
             </Offer>
           </RowItem>
+        </Row>
+        <Row>
+          <PinkCheckbox text="Use this address as my billing address" id="billingAddress" />
         </Row>
       </Container>
     )
