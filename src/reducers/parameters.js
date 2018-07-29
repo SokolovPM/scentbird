@@ -7,7 +7,11 @@ const {
   CHECK_EMAIL,
   CHANGE_PASSWORD,
   CHECK_PASSWORD,
-  GO_TO_BUY
+  GO_TO_BUY,
+  CHANGE_FIRST_NAME,
+  CHECK_FIRST_NAME,
+  CHANGE_LAST_NAME,
+  CHECK_LAST_NAME
 } = constants;
 
 const initialValues = {
@@ -16,7 +20,9 @@ const initialValues = {
   email: '',
   emailError: '',
   password: '',
-  passwordError: ''
+  passwordError: '',
+  firstName: '',
+  firstNameError: ''
 };
 
 const checkEmail = (email) => {
@@ -54,16 +60,35 @@ export default createReducer(initialValues, {
     return { passwordError: checkPassword(state.password)}
   },
 
+  [CHANGE_FIRST_NAME]: (state, { firstName }) => ({ firstName }),
+  [CHECK_FIRST_NAME]: (state, {}) => {
+    return { firstNameError: state.firstName ? '' : 'This field is required'}
+  },
+
+  [CHANGE_LAST_NAME]: (state, { lastName }) => ({ lastName }),
+  [CHECK_LAST_NAME]: (state, {}) => {
+    return { lastNameError: state.lastName ? '' : 'This field is required'}
+  },
+
+
+
+
+
   [GO_TO_BUY]: (state) => {
     const result = {};
 
     result.emailError = checkEmail(state.email);
     result.passwordError = checkPassword(state.password);
+    result.firstNameError = state.firstName ? '' : 'This field is required';
+    result.lastNameError = state.lastName ? '' : 'This field is required';
 
-    if (result.emailError || result.passwordError) {
+    if (result.emailError || result.passwordError || result.firstNameError ||
+      result.lastNameError
+    ) {
       return result;
     } else {
       // go to buy
+      console.log('go to buy')
     }
   }
 });

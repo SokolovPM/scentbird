@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import styled  from 'styled-components';
 import Media from "react-media";
+import { connect } from 'react-redux';
 
 import { Container, Title, Row, RowItem, Input, Label, Error } from './common-components';
+
+import {
+  changeFirstName,
+  checkFirstName,
+  changeLastName,
+  checkLastName
+} from '../../../actions';
 
 import CustomSelect from './custom-select'
 import PinkCheckbox from './pink-checkbox';
@@ -48,14 +56,6 @@ const states = [
 
 class Address extends Component {
   state = {
-    firstName: {
-      value: '',
-      validation: true
-    },
-    lastName: {
-      value: '',
-      validation: true
-    },
     streetAddress: {
       value: '',
       validation: true
@@ -105,7 +105,8 @@ class Address extends Component {
   }
 
   render() {
-    const { firstName, lastName, streetAddress, apartment, postcode, phone, country } = this.state;
+    const { streetAddress, apartment, postcode, phone, country } = this.state;
+    console.log('render', this.props)
     return (
       <Container>
         <Title>Shipping address</Title>
@@ -113,25 +114,25 @@ class Address extends Component {
           <RowItem>
             <Input
               placeholder="First name"
-              value={firstName.value}
-              onChange={(e) => this.handleInput(e, 'firstName')}
-              onBlur={() => this.notEmptyValidate('firstName')}
-              validation={firstName.validation}
+              value={this.props.firstName}
+              onChange={(e) => this.props.changeFirstName(e.target.value)}
+              onBlur={this.props.checkFirstName}
+              validation={!this.props.firstNameError}
               isLight={true}
             />
             <Label>First name</Label>
-            {!firstName.validation && <Error>This field is required</Error>}
+            {this.props.firstNameError && <Error>{this.props.firstNameError}</Error>}
           </RowItem>
           <RowItem isLastBlock={true}>
             <Input
               placeholder="Last name"
-              value={lastName.value}
-              onChange={(e) => this.handleInput(e, 'lastName')}
-              onBlur={() => this.notEmptyValidate('lastName')}
-              validation={lastName.validation}
+              value={this.props.lastName}
+              onChange={(e) => this.props.changeLastName(e.target.value)}
+              onBlur={this.props.checkLastName}
+              validation={!this.props.lastNameError}
             />
             <Label>Last name</Label>
-            {!lastName.validation && <Error>This field is required</Error>}
+            {this.props.lastNameError && <Error>{this.props.lastNameError}</Error>}
           </RowItem>
         </Row>
         <Row>
@@ -222,4 +223,13 @@ class Address extends Component {
   }
 }
 
-export default Address;
+export default connect(
+  state => ({
+    firstName: state.parameters.firstName,
+    firstNameError: state.parameters.firstNameError,
+    lastName: state.parameters.lastName,
+    lastNameError: state.parameters.lastNameError,
+
+  }),
+  { changeFirstName, checkFirstName, changeLastName, checkLastName }
+)(Address);
