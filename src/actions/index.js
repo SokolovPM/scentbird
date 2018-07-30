@@ -26,7 +26,8 @@ const {
   CHANGE_STATE,
   CHANGE_CITY,
   CHANGE_MONTH,
-  CHANGE_YEAR
+  CHANGE_YEAR,
+  CHANGE_GENDER
 } = constants;
 
 export const changeSecurityCode = (securityCode) => ({
@@ -137,6 +138,11 @@ export const changeMonth = (selectedMonth) => ({
 export const changeYear = (selectedYear) => ({
   type: CHANGE_YEAR,
   selectedYear
+})
+
+export const changeGender = (gender) => ({
+  type: CHANGE_GENDER,
+  gender
 })
 
 export const goToBuy = () => ({

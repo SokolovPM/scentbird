@@ -26,5 +26,6 @@ export default tokeys ([
   'CHANGE_STATE',
   'CHANGE_CITY',
   'CHANGE_MONTH',
-  'CHANGE_YEAR'
+  'CHANGE_YEAR',
+  'CHANGE_GENDER'
 ]);

@@ -29,7 +29,8 @@ const {
   CHANGE_STATE,
   CHANGE_CITY,
   CHANGE_MONTH,
-  CHANGE_YEAR
+  CHANGE_YEAR,
+  CHANGE_GENDER
 } = constants;
 
 const initialValues = {
@@ -61,7 +62,9 @@ const initialValues = {
   selectedMonthError: '',
   years,
   selectedYear: '',
-  selectedYearError: ''
+  selectedYearError: '',
+  gender: '',
+  genderError: ''
 };
 
 const checkEmail = (email) => {
@@ -160,7 +163,6 @@ export default createReducer(initialValues, {
 
   [CHANGE_CARD_TYPE]: (state, { cardType }) => ({ cardType }),
 
-
   [CHANGE_CARD_NUMBER]: (state, { cardNumber }) => ({ cardNumber }),
   [CHECK_CARD_NUMBER]: (state, {}) => {
     return { cardNumberError: checkCardNumber(state.cardNumber, state.cardType)}
@@ -176,12 +178,21 @@ export default createReducer(initialValues, {
 
   [CHANGE_MONTH]: (state, { selectedMonth }) => ({ selectedMonth, selectedMonthError: selectedMonth ? '' : 'This field is required' }),
   [CHANGE_YEAR]: (state, { selectedYear }) => ({ selectedYear, selectedYearError: selectedYear ? '' : 'This field is required' }),
+  [CHANGE_GENDER]: (state, { gender }) => ({ gender, genderError: gender ? '' : 'Your gender is required' }),
 
   [GO_TO_BUY]: (state) => {
     const result = {};
 
-    result.emailError = checkEmail(state.email);
-    result.passwordError = checkPassword(state.password);
+    if (window.innerWidth > 320) {
+      result.emailError = checkEmail(state.email);
+      result.passwordError = checkPassword(state.password);
+      result.genderError = '';
+    } else {
+      result.emailError = '';
+      result.passwordError = '';
+      result.genderError = state.gender ? '' : 'Your gender is required';
+    }
+
     result.firstNameError = state.firstName ? '' : 'This field is required';
     result.lastNameError = state.lastName ? '' : 'This field is required';
     result.streetAddressError = state.streetAddress ? '' : 'This field is required';
@@ -196,7 +207,8 @@ export default createReducer(initialValues, {
     if (result.emailError || result.passwordError || result.firstNameError ||
       result.lastNameError || result.streetAddressError || result.postcodeError ||
       result.countryError || result.cardNumberError || result.securityCodeError ||
-      result.wrongSecurityCode || result.selectedMonthError || result.selectedYearError
+      result.wrongSecurityCode || result.selectedMonthError || result.selectedYearError ||
+      result.genderError
     ) {
       return result;
     } else {
