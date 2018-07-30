@@ -7,9 +7,10 @@ import {
   changeCardType,
   changeCardNumber,
   checkCardNumber,
-
   changeSecurityCode,
-  checkSecurityCode
+  checkSecurityCode,
+  changeMonth,
+  changeYear
 } from '../../../actions';
 
 import { Icon } from '../../icon';
@@ -17,7 +18,6 @@ import { Icon } from '../../icon';
 import { Container, Title, Row, RowItem, Input, Label, Error } from './common-components';
 import CustomSelect from './custom-select';
 
-import { months, years } from './data-utils';
 
 const CardData = styled.div`
   margin-top: 20px;
@@ -132,7 +132,15 @@ const Card = ({
   securityCodeError,
   wrongSecurityCode,
   changeSecurityCode,
-  checkSecurityCode
+  checkSecurityCode,
+  months,
+  selectedMonth,
+  selectedMonthError,
+  changeMonth,
+  years,
+  selectedYear,
+  selectedYearError,
+  changeYear
 }) => (
   <Container>
     <Title>Secure credit card payment</Title>
@@ -175,10 +183,26 @@ const Card = ({
               </Row>
               <Row>
                 <SelectItem>
-                  <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
+                  <CustomSelect
+                    options={months}
+                    iconName="selectArrowGrey"
+                    light={true}
+                    placeholder="Month"
+                    selectedOption={selectedMonth}
+                    onChange={changeMonth}
+                    error={selectedMonthError}
+                  />
                 </SelectItem>
                 <SelectItem>
-                  <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
+                  <CustomSelect
+                    options={years}
+                    iconName="selectArrowGrey"
+                    light={true}
+                    placeholder="Year"
+                    selectedOption={selectedYear}
+                    onChange={changeYear}
+                    error={selectedYearError}
+                  />
                 </SelectItem>
               </Row>
               <Row style={{ justifyContent: 'flex-start' }}>
@@ -235,10 +259,26 @@ const Card = ({
               </Row>
               <Row>
                 <RowItem width={25} style={{ paddingRight: '0', marginRight: '10px' }}>
-                  <CustomSelect options={months} iconName="selectArrowGrey" light={true} placeholder="Month" />
+                  <CustomSelect
+                    options={months}
+                    iconName="selectArrowGrey"
+                    light={true}
+                    placeholder="Month"
+                    selectedOption={selectedMonth}
+                    onChange={changeMonth}
+                    error={selectedMonthError}
+                  />
                 </RowItem>
                 <RowItem width={25} isLastBlock={true} style={{ paddingLeft: '0', marginLeft: '10px' }}>
-                  <CustomSelect options={years} iconName="selectArrowGrey" light={true} placeholder="Year" />
+                  <CustomSelect
+                    options={years}
+                    iconName="selectArrowGrey"
+                    light={true}
+                    placeholder="Year"
+                    selectedOption={selectedYear}
+                    onChange={changeYear}
+                    error={selectedYearError}
+                  />
                 </RowItem>
                 <RowItem>
                   <ExpirationTitle>Exp.</ExpirationTitle>
@@ -258,16 +298,23 @@ export default connect(
     cardType: state.parameters.cardType,
     cardNumber: state.parameters.cardNumber,
     cardNumberError: state.parameters.cardNumberError,
-
     securityCode: state.parameters.securityCode,
     securityCodeError: state.parameters.securityCodeError,
-    wrongSecurityCode: state.parameters.wrongSecurityCode
+    wrongSecurityCode: state.parameters.wrongSecurityCode,
+    months: state.parameters.months,
+    selectedMonth: state.parameters.selectedMonth,
+    selectedMonthError: state.parameters.selectedMonthError,
+    years: state.parameters.years,
+    selectedYear: state.parameters.selectedYear,
+    selectedYearError: state.parameters.selectedYearError
   }),
   {
     changeCardType,
     changeCardNumber,
     checkCardNumber,
     changeSecurityCode,
-    checkSecurityCode
+    checkSecurityCode,
+    changeMonth,
+    changeYear
   }
 )(Card);

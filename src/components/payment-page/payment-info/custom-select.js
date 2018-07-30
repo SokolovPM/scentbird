@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import { Error } from './common-components';
+
 import { Icon } from '../../icon';
 
 const Container = styled.div`
@@ -18,7 +20,8 @@ const Control = styled.div`
   padding: 0;
   color: #000000;
   font-size: 18px;
-  border: 1px solid #E6E6E6;
+
+  ${props => props.isError ? 'border: 2px solid #FD6464;' : 'border: 2px solid #E6E6E6;'}
 `;
 
 const Label = styled.div`
@@ -87,28 +90,19 @@ const Value = styled.span`
 `;
 
 class CustomSelect extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      selectedOption: this.props.placeholder || this.props.options[0]
-    }
-  }
-
   handleChange = (code) => {
     const options = this.props.options;
     const selectedOption = options.find(option => option.code === code);
-    this.setState({ selectedOption });
+    this.props.onChange(selectedOption);
   }
 
   render () {
-    const options = this.props.options;
-    const selectedOption = this.state.selectedOption;
+    const { options, selectedOption, error } = this.props;
     return (
       <Container>
-        <Control isLight={this.props.light}>
+        <Control isLight={this.props.light} isError={!!error}>
           <Label>
-            <Value isPlaceholder={!selectedOption.name}>{selectedOption.name || selectedOption}</Value>
+            <Value isPlaceholder={!selectedOption}>{selectedOption ? selectedOption.name : this.props.placeholder}</Value>
             <ArrowDown>
               <Icon name={this.props.iconName || 'arrowDown'} />
             </ArrowDown>
@@ -126,6 +120,7 @@ class CustomSelect extends Component {
             </Wrapper>
           </Label>
         </Control>
+        {error && <Error>{error}</Error>}
       </Container>
     )
   }

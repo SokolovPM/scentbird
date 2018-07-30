@@ -17,7 +17,9 @@ import {
   checkPostcode,
   changeCountry,
   checkCountry,
-  changePhone
+  changePhone,
+  changeState,
+  changeCity
 } from '../../../actions';
 
 import CustomSelect from './custom-select'
@@ -43,25 +45,6 @@ export const SelectItem = styled.div`
   }
 `;
 
-const states = [
-  {
-    code: 'NY',
-    name: 'NEW YORK'
-  },
-  {
-    code: 'CA',
-    name: 'CALIFORNIA'
-  },
-  {
-    code: 'HW',
-    name: 'HAWAII'
-  },
-  {
-    code: 'AL',
-    name: 'ALABAMA'
-  }
-]
-
 const Address = ({
   firstName,
   firstNameError,
@@ -86,7 +69,12 @@ const Address = ({
   changeCountry,
   checkCountry,
   phone,
-  changePhone
+  changePhone,
+  selectedState,
+  states,
+  changeState,
+  selectedCity,
+  changeCity
 }) => (
   <Container>
     <Title>Shipping address</Title>
@@ -151,10 +139,18 @@ const Address = ({
         {postcodeError && <Error>{postcodeError}</Error>}
       </RowItem>
       <SelectItem>
-        <CustomSelect options={states} />
+        <CustomSelect
+          options={states}
+          onChange={changeState}
+          selectedOption={selectedState}
+        />
       </SelectItem>
       <SelectItem isLastBlock={true}>
-        <CustomSelect options={states} />
+        <CustomSelect
+          options={states.find(state => state.code === selectedState.code).cities}
+          onChange={changeCity}
+          selectedOption={selectedCity}
+        />
       </SelectItem>
     </Row>
     <Row>
@@ -215,7 +211,9 @@ export default connect(
     country: state.parameters.country,
     countryError: state.parameters.countryError,
     phone: state.parameters.phone,
-
+    selectedState: state.parameters.selectedState,
+    states: state.parameters.states,
+    selectedCity: state.parameters.selectedCity
   }),
   {
     changeFirstName,
@@ -229,6 +227,8 @@ export default connect(
     checkPostcode,
     changeCountry,
     checkCountry,
-    changePhone
+    changePhone,
+    changeState,
+    changeCity
   }
 )(Address);

@@ -1,6 +1,8 @@
 import constants from '../constants';
 import createReducer from '../utils/createReducer';
 
+import { months, years, states } from './data-utils';
+
 const {
   CHANGE_SECURITY_CODE,
   CHECK_SECURITY_CODE,
@@ -23,7 +25,11 @@ const {
   CHANGE_PHONE,
   CHANGE_CARD_TYPE,
   CHANGE_CARD_NUMBER,
-  CHECK_CARD_NUMBER
+  CHECK_CARD_NUMBER,
+  CHANGE_STATE,
+  CHANGE_CITY,
+  CHANGE_MONTH,
+  CHANGE_YEAR
 } = constants;
 
 const initialValues = {
@@ -46,7 +52,16 @@ const initialValues = {
   phone: '',
   cardType: 'vi',
   cardNumber: '',
-  cardNumberError: ''
+  cardNumberError: '',
+  selectedState: states[0],
+  states,
+  selectedCity: states[0].cities[0],
+  months,
+  selectedMonth: '',
+  selectedMonthError: '',
+  years,
+  selectedYear: '',
+  selectedYearError: ''
 };
 
 const checkEmail = (email) => {
@@ -151,6 +166,16 @@ export default createReducer(initialValues, {
     return { cardNumberError: checkCardNumber(state.cardNumber, state.cardType)}
   },
 
+  [CHANGE_STATE]: (state, { selectedState }) => {
+    return {
+      selectedState,
+      selectedCity: selectedState.cities[0]
+    }
+  },
+  [CHANGE_CITY]: (state, { selectedCity }) => ({ selectedCity }),
+
+  [CHANGE_MONTH]: (state, { selectedMonth }) => ({ selectedMonth, selectedMonthError: selectedMonth ? '' : 'This field is required' }),
+  [CHANGE_YEAR]: (state, { selectedYear }) => ({ selectedYear, selectedYearError: selectedYear ? '' : 'This field is required' }),
 
   [GO_TO_BUY]: (state) => {
     const result = {};
@@ -165,11 +190,13 @@ export default createReducer(initialValues, {
     result.cardNumberError = checkCardNumber(state.cardNumber, state.cardType);
     result.securityCodeError = checkSecurityCode(state.securityCode);
     result.wrongSecurityCode = state.securityCode === '111';
+    result.selectedMonthError = state.selectedMonth ? '' : 'This field is required';
+    result.selectedYearError = state.selectedYear ? '' : 'This field is required';
 
     if (result.emailError || result.passwordError || result.firstNameError ||
       result.lastNameError || result.streetAddressError || result.postcodeError ||
       result.countryError || result.cardNumberError || result.securityCodeError ||
-      result.wrongSecurityCode
+      result.wrongSecurityCode || result.selectedMonthError || result.selectedYearError
     ) {
       return result;
     } else {

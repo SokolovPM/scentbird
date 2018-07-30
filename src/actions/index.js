@@ -22,7 +22,11 @@ const {
   CHANGE_PHONE,
   CHANGE_CARD_TYPE,
   CHANGE_CARD_NUMBER,
-  CHECK_CARD_NUMBER
+  CHECK_CARD_NUMBER,
+  CHANGE_STATE,
+  CHANGE_CITY,
+  CHANGE_MONTH,
+  CHANGE_YEAR
 } = constants;
 
 export const changeSecurityCode = (securityCode) => ({
@@ -113,6 +117,26 @@ export const changeCardNumber = (cardNumber) => ({
 })
 export const checkCardNumber = () => ({
   type: CHECK_CARD_NUMBER
+})
+
+export const changeState = (selectedState) => ({
+  type: CHANGE_STATE,
+  selectedState
+})
+
+export const changeCity = (selectedCity) => ({
+  type: CHANGE_CITY,
+  selectedCity
+})
+
+export const changeMonth = (selectedMonth) => ({
+  type: CHANGE_MONTH,
+  selectedMonth
+})
+
+export const changeYear = (selectedYear) => ({
+  type: CHANGE_YEAR,
+  selectedYear
 })
 
 export const goToBuy = () => ({

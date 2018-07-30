@@ -7,7 +7,7 @@ import {
   goToBuy
 } from '../../../actions';
 
-import { Row, RowItem } from './common-components';
+import { Row } from './common-components';
 
 import { Icon } from '../../icon';
 
@@ -47,32 +47,30 @@ export const Wrapper = styled.div`
   text-align: center;
 `;
 
-class Buttons extends Component {
-  render () {
-    return (
-      <Media query="(max-width: 320px)">
-        {matches =>
-          matches ? (
-            <Wrapper>
-              <BuyBlock>
-                <Text>BUY NOW</Text>
-                <Arrow><Icon name="buyArrow" /></Arrow>
-              </BuyBlock>
-            </Wrapper>
-          ) : (
-            <Row justifyContent="flex-end">
-              <Back>Back</Back>
-              <BuyBlock onClick={this.props.goToBuy}>
-                <Text>BUY NOW</Text>
-                <Arrow><Icon name="buyArrow" /></Arrow>
-              </BuyBlock>
-            </Row>
-          )
-        }
-      </Media>
-    )
-  }
-}
+const Buttons = ({
+  goToBuy
+}) => (
+  <Media query="(max-width: 320px)">
+    {matches =>
+      matches ? (
+        <Wrapper>
+          <BuyBlock onClick={goToBuy}>
+            <Text>BUY NOW</Text>
+            <Arrow><Icon name="buyArrow" /></Arrow>
+          </BuyBlock>
+        </Wrapper>
+      ) : (
+        <Row justifyContent="flex-end">
+          <Back>Back</Back>
+          <BuyBlock onClick={goToBuy}>
+            <Text>BUY NOW</Text>
+            <Arrow><Icon name="buyArrow" /></Arrow>
+          </BuyBlock>
+        </Row>
+      )
+    }
+  </Media>
+)
 
 export default connect(
   state => ({

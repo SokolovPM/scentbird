@@ -81,3 +81,36 @@ export const years = [
     name: 2025
   }
 ]
+
+export const states = [
+  {
+    code: 'NY',
+    name: 'NEW YORK',
+    cities: [
+      { code: 'NEW_YORK', name: 'NEW YORK'},
+      { code: 'ALBANY', name: 'ALBANY'},
+      { code: 'WATERDOWN', name: 'WATERDOWN'},
+      { code: 'SYRACUSE', name: 'SYRACUSE'},
+    ]
+  },
+  {
+    code: 'CA',
+    name: 'CALIFORNIA',
+    cities: [
+      { code: 'SAN_FRANCISCO', name: 'SAN FRANCISCO'},
+      { code: 'SAN_JOSE', name: 'SAN JOSE'},
+      { code: 'LOS_ANGELES', name: 'LOS ANGELES'},
+      { code: 'SAN_DIEGO', name: 'SAN DIEGO'},
+    ]
+  },
+  {
+    code: 'TX',
+    name: 'TEXAS',
+    cities: [
+      { code: 'DALLAS', name: 'DALLAS'},
+      { code: 'HOUSTON', name: 'HOUSTON'},
+      { code: 'SAN_ANTONIO', name: 'SAN ANTONIO'},
+      { code: 'FORT_WORTH', name: 'FORT WORTH'},
+    ]
+  }
+]
